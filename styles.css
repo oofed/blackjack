@@ -1,0 +1,95 @@
+body {
+    background-color: rgb(105, 0, 0);
+  }
+
+  h1 {
+    color: whitesmoke;
+    text-align: center; 
+    font-size: 40px;
+    padding: 0px;
+    
+    
+  }
+
+  #messages h2 {
+      margin: 15px;
+      padding-top: 30px;
+      color: whitesmoke;
+      text-transform: uppercase;
+      font-weight: 400;
+      text-align: center;
+  }
+
+
+  
+  .card {
+    width: 170px;
+    height: 250px;
+    font-size: 30px;
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 15px;
+    margin-left: 15px; 
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-top {
+    align-self: flex-start;
+}
+
+.card-bottom {
+    align-self: flex-end;
+    transform:rotate(180deg);
+
+}
+
+.suit {
+      font-size: 40px;
+}
+
+.Hit {
+    border-radius: 50%;
+}
+.Stand {
+
+    border-radius: 50%;
+}
+.Controls {
+    display:flex;
+    justify-content: center;
+    flex-direction: row;
+    margin:4px;
+
+}
+.P_hand {
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    
+}
+.D_hand {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+#dealer-label, #player-label {
+    display: block;
+    color: whitesmoke;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: left;
+    width: 20px;
+    margin: 80px;
+}
+
+.black {
+    color: black;
+}
+
+.red {
+    color: red;
+}
