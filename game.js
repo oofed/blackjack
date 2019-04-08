@@ -1,21 +1,46 @@
 console.log("Script loaded");
 
-function handleHit(){
-    const card = {
-        label: 'A',
-        value: 14,
-        suit: {
-            name: 'spades',
-            symbol: '&spades;'
-        }
+async function handleHit(){
+    console.log("hit");
 
-    };
-    document.getElementById('Player-hand').appendChild(createCard(card));
+    const state = await makeAction('hit');
+    
+    if (state.resolve) {
+        gameOver(state.resolve);
+    }
+
 }
 
-function handleStand(){
-    console.log("Stand")
-}
+async function handleStand(){
+    console.log("Stand");
+    let state = await makeAction('stand');
+
+
+    if(!state.resolve){
+        handlePlay();
+    } else {
+        gameOver(state.resolve);
+    }
+
+};
+
+const gameOver = (resolve) => {
+    document.querySelector('#overlay').style.visibility = 'visible';
+    document.querySelector('#gameover p').textContent = resolve.message;
+};
+
+const handlePlay = async () => {
+    let state = await makeAction('play');
+
+    if(!state.resolve){
+        setTimeout(handlePlay, 1000);
+
+    }
+    else {
+        gameOver(state.resolve);
+    }
+
+};
 
 function createCard(card) {
     const newCard = document.createElement('div');
@@ -33,6 +58,7 @@ function createCard(card) {
     bottom.classList.add('card-bottom');
     bottom.textContent = card.label;
 
+    
 
     console.log(top);
     newCard.appendChild(top);
@@ -43,7 +69,7 @@ function createCard(card) {
 }
 
 async function makeAction(action) {
-    const protocol = 'https://';
+    const protocol = 'http://';
     const host = 'polar-temple-58359.herokuapp.com';
     const path = '/api/v1/game/';
     const gameId = 'test';
@@ -61,17 +87,39 @@ async function makeAction(action) {
         body: JSON.stringify(reqData)
     });
 
-    const resData = await response.json();
+    const respData = await response.json();
 
-    console.log(resData);
+    console.log(action, respData);
+    render(respData);
 
+    return respData;
 }
 
-function addCard(container) {
-    container.appendChild(createCard());
+function render(state){
+    console.log('To render', state);
+
+    const dealerHand = document.getElementById('Dealer-hand');
+    dealerHand.innerHTML = '';
+    for(let i = 0; i < state.dealer.cards.length; i++) {
+        dealerHand.appendChild(createCard(state.dealer.cards[i]));
+    }
+   
+    const playerHand = document.getElementById('Player-hand');
+    playerHand.innerHTML = '';
+
+    state.player.cards.forEach(card => {
+        playerHand.appendChild(createCard(card));
+    });
+
+   
 }
+
 
 document.getElementById('hit').onclick = handleHit;
 document.getElementById('stand').addEventListener('click',handleStand);
+document.querySelector('#gameover button').onclick= () => {
+     document.getElementById('overlay').style.visibility = 'hidden';
+     makeAction('deal');
+};
 
-console.log(createCard());
+makeAction('deal');
