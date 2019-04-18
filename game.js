@@ -123,3 +123,5 @@ document.querySelector('#gameover button').onclick= () => {
 };
 
 makeAction('deal');
+
+moi
